@@ -43,11 +43,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataLayer\CommandFactories\CommandFactoryMovies.cs" />
+    <Compile Include="DataLayer\Extensions\DbConnectionExtensions.cs" />
+    <Compile Include="DataLayer\Extensions\DbTransactionExtensions.cs" />
+    <Compile Include="DataLayer\Extensions\DisposableExtensions.cs" />
+    <Compile Include="DataLayer\ModelAdapters\ModelAdapterMovies.cs" />
+    <Compile Include="DataLayer\MovieDataManager.cs" />
+    <Compile Include="Enums\EnumDescriptionAttribute.cs" />
+    <Compile Include="Enums\Genre.cs" />
+    <Compile Include="Exceptions\InvalidGenreException.cs" />
+    <Compile Include="Models\ImdbMovie.cs" />
+    <Compile Include="Parsers\GenreParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="PublishMovieDbToLocalDb.bat" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
