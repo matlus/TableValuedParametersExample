@@ -7,13 +7,24 @@ AS
 	-- Insert Distinct Genres into the Genre table
 	INSERT
 	INTO	dbo.Genre
-	SELECT	DISTINCT Genre
-	FROM	@MovieTvp
+	SELECT DISTINCT(Genre)
+	FROM	@movieTvp
+	EXCEPT
+	SELECT	dbo.Genre.Title
+	FROM	dbo.Genre
+
+
+	--SELECT	DISTINCT Genre
+	--FROM	@MovieTvp
 
 	-- Insert Movies into the Movie Table
+	DECLARE	@MaxMovieId int = 0;
+	SELECT	@MaxMovieId = ISNULL(MAX(Id), 0)
+	FROM	dbo.Movie
+
 	INSERT
 	INTO	dbo.Movie (Id, Title, [Year], ImageUrl)
-	SELECT	ROW_Number() OVER (ORDER BY Title) Id, Title, [Year], ImageUrl
+	SELECT	@MaxMovieId + ROW_Number() OVER (ORDER BY Title) Id, Title, [Year], ImageUrl
 	FROM	@MovieTvp m
 	
 	-- Select the Movie.Id and the Genre.Id columns and insert into the Assoc_MovieGenre
