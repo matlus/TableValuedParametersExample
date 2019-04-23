@@ -8,7 +8,7 @@ AS
 	INSERT
 	INTO	dbo.Genre
 	SELECT DISTINCT(Genre)
-	FROM	@movieTvp
+	FROM	@MovieTvp
 	EXCEPT
 	SELECT	dbo.Genre.Title
 	FROM	dbo.Genre
