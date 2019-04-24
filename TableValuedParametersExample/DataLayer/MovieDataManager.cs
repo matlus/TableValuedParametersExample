@@ -74,7 +74,7 @@ namespace TableValuedParametersExample.DataLayer
             return dbConnection;
         }
 
-        public void CreateMovies(IEnumerable<ImdbMovie> imdbMovies)
+        public void CreateMoviesTvpMergeMerge(IEnumerable<ImdbMovie> imdbMovies)
         {
             DbConnection dbConnection = null;
             DbTransaction dbTransaction = null;
@@ -84,8 +84,121 @@ namespace TableValuedParametersExample.DataLayer
                 dbConnection = CreateDbConnection();
                 dbConnection.Open();
                 dbTransaction = dbConnection.BeginTransaction();
-                dbCommand = CommandFactoryMovies.CreateCommandForCreateMovies(dbConnection, dbTransaction, imdbMovies);
+                dbCommand = CommandFactoryMovies.CreateCommandForCreateMoviesTvpMergeMerge(dbConnection, dbTransaction, imdbMovies);
                 dbCommand.ExecuteNonQuery();
+                dbTransaction.Commit();
+            }
+            catch (DbException)
+            {
+                dbTransaction.RollbackIfNotNull();
+                throw;
+            }
+            finally
+            {
+                dbCommand.DisposeIfNotNull();
+                dbTransaction.DisposeIfNotNull();
+                dbConnection.CloseAndDispose();
+            }
+        }
+
+        public void CreateMoviesTvpMergeInsertInto(IEnumerable<ImdbMovie> imdbMovies)
+        {
+            DbConnection dbConnection = null;
+            DbTransaction dbTransaction = null;
+            DbCommand dbCommand = null;
+            try
+            {
+                dbConnection = CreateDbConnection();
+                dbConnection.Open();
+                dbTransaction = dbConnection.BeginTransaction();
+                dbCommand = CommandFactoryMovies.CreateCommandForCreateMoviesTvpMergeInsertInto(dbConnection, dbTransaction, imdbMovies);
+                dbCommand.ExecuteNonQuery();
+                dbTransaction.Commit();
+            }
+            catch (DbException)
+            {
+                dbTransaction.RollbackIfNotNull();
+                throw;
+            }
+            finally
+            {
+                dbCommand.DisposeIfNotNull();
+                dbTransaction.DisposeIfNotNull();
+                dbConnection.CloseAndDispose();
+            }
+        }
+
+        public void CreateMoviesTvpDistinctInsertInto(IEnumerable<ImdbMovie> imdbMovies)
+        {
+            DbConnection dbConnection = null;
+            DbTransaction dbTransaction = null;
+            DbCommand dbCommand = null;
+            try
+            {
+                dbConnection = CreateDbConnection();
+                dbConnection.Open();
+                dbTransaction = dbConnection.BeginTransaction();
+                dbCommand = CommandFactoryMovies.CreateCommandForCreateMoviesTvpDistinctInsertInto(dbConnection, dbTransaction, imdbMovies);
+                dbCommand.ExecuteNonQuery();
+                dbTransaction.Commit();
+            }
+            catch (DbException)
+            {
+                dbTransaction.RollbackIfNotNull();
+                throw;
+            }
+            finally
+            {
+                dbCommand.DisposeIfNotNull();
+                dbTransaction.DisposeIfNotNull();
+                dbConnection.CloseAndDispose();
+            }
+        }
+
+        public void CreateMoviesTvpUsingCursor(IEnumerable<ImdbMovie> imdbMovies)
+        {
+            DbConnection dbConnection = null;
+            DbTransaction dbTransaction = null;
+            DbCommand dbCommand = null;
+            try
+            {
+                dbConnection = CreateDbConnection();
+                dbConnection.Open();
+                dbTransaction = dbConnection.BeginTransaction();
+                dbCommand = CommandFactoryMovies.CreateCommandForCreateMoviesTvpUsingCursor(dbConnection, dbTransaction, imdbMovies);
+                dbCommand.ExecuteNonQuery();
+                dbTransaction.Commit();
+            }
+            catch (DbException)
+            {
+                dbTransaction.RollbackIfNotNull();
+                throw;
+            }
+            finally
+            {
+                dbCommand.DisposeIfNotNull();
+                dbTransaction.DisposeIfNotNull();
+                dbConnection.CloseAndDispose();
+            }
+        }
+
+        public void CreateMoviesWithoutTvp(IEnumerable<ImdbMovie> imdbMovies)
+        {
+            DbConnection dbConnection = null;
+            DbTransaction dbTransaction = null;
+            DbCommand dbCommand = null;
+            try
+            {
+                dbConnection = CreateDbConnection();
+                dbConnection.Open();
+                dbTransaction = dbConnection.BeginTransaction();
+
+                foreach (var imdbMovie in imdbMovies)
+                {
+                    dbCommand = CommandFactoryMovies.CreateCommandForCreateMovie(dbConnection, dbTransaction, imdbMovie);
+                    dbCommand.ExecuteNonQuery();
+                }
+
                 dbTransaction.Commit();
             }
             catch (DbException)

@@ -1,8 +1,7 @@
-﻿CREATE PROCEDURE [dbo].[CreateMovies]
+﻿CREATE PROCEDURE [dbo].[CreateMoviesTvpDistinctInsertInto]
 	@MovieTvp MovieTvp READONLY
 AS
-	SET NOCOUNT ON
-	SET IDENTITY_INSERT dbo.Movie ON
+	SET NOCOUNT ON	
 
 	-- Insert Distinct Genres into the Genre table
 	INSERT
@@ -13,18 +12,10 @@ AS
 	SELECT	dbo.Genre.Title
 	FROM	dbo.Genre
 
-
-	--SELECT	DISTINCT Genre
-	--FROM	@MovieTvp
-
 	-- Insert Movies into the Movie Table
-	DECLARE	@MaxMovieId int = 0;
-	SELECT	@MaxMovieId = ISNULL(MAX(Id), 0)
-	FROM	dbo.Movie
-
 	INSERT
-	INTO	dbo.Movie (Id, Title, [Year], ImageUrl)
-	SELECT	@MaxMovieId + ROW_Number() OVER (ORDER BY Title) Id, Title, [Year], ImageUrl
+	INTO	dbo.Movie (Title, [Year], ImageUrl)
+	SELECT	Title, [Year], ImageUrl
 	FROM	@MovieTvp m
 	
 	-- Select the Movie.Id and the Genre.Id columns and insert into the Assoc_MovieGenre
@@ -39,8 +30,5 @@ AS
 	JOIN	dbo.Movie
 	ON		dbo.Movie.Title = mtvp.Title
 
-	SET IDENTITY_INSERT dbo.Movie OFF
 	SET NOCOUNT OFF
-
-
 RETURN 0
